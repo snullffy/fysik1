@@ -66,61 +66,30 @@
   }
 
   function modeCard(route, title, desc) {
-    return (
-      '<button type="button" class="mode-link" data-go="' +
-      route +
-      '"><strong>' +
-      escapeHtml(title) +
-      "</strong><span>" +
-      escapeHtml(desc) +
-      "</span></button>"
-    );
+    return '<button type="button" class="btn" data-go="' + route + '"><span>' + escapeHtml(title) + "<small>" + escapeHtml(desc) + "</small></span></button>";
   }
 
   function layout(inner) {
-    const nav = NAV_ITEMS.map(function (item) {
-      const active = App.route === item.id ? " active" : "";
-      return (
-        '<button type="button" class="nav-btn' +
-        active +
-        '" data-nav="' +
-        item.id +
-        '">' +
-        escapeHtml(item.label) +
-        "</button>"
-      );
+    const chips = NAV_ITEMS.map(function (item) {
+      return '<button type="button" class="chip' + (App.route === item.id ? " active" : "") + '" data-nav="' + item.id + '">' + escapeHtml(item.label) + "</button>";
     }).join("");
     const calc =
       inExam()
         ? ""
         : App.calcOpen
           ? '<div class="calc-panel"><div class="calc-box"><div class="label">Miniräknare</div><form data-calc="1"><input name="expr" placeholder="t.ex. 72/3.6" autocomplete="off"><div class="btn-row"><button class="btn" type="submit">Beräkna</button><button class="btn btn-secondary" type="button" data-action="calc-close">Stäng</button></div></form><p class="meta" data-calc-out></p></div></div>'
-          : '<div class="calc-panel"><button class="btn btn-secondary" data-action="calc-open">Miniräknare</button></div>';
-
+          : "";
     return (
-      '<div class="app">' +
-      '<div class="backdrop' +
-      (App.menuOpen ? " show" : "") +
-      '" data-action="close-menu"></div>' +
-      '<aside class="sidebar' +
-      (App.menuOpen ? " open" : "") +
-      '">' +
-      '<div class="brand"><div class="brand-title">Fysik 1</div>' +
-      '<div class="brand-sub">Prefix &amp; enheter · TE26</div></div>' +
-      '<nav class="nav">' +
-      nav +
-      "</nav>" +
-      '<div class="side-foot">Heureka! Fysik 1<br>Gy25 · aktiv problemlösning</div>' +
-      "</aside>" +
-      '<div class="main">' +
       '<header class="topbar">' +
-      '<button class="menu-toggle" data-action="menu" aria-label="Öppna meny"><span></span><span></span><span></span></button>' +
-      '<div class="topbar-title">Fysik 1</div></header>' +
-      '<main class="content">' +
-      inner +
-      "</main></div>" +
-      calc +
-      "</div>"
+      '<div class="topbar-inner">' +
+      '<button type="button" class="brand" data-nav="home" aria-label="Till startsidan"><span class="brand-mark">F1</span><span class="brand-name">Fysik 1</span></button>' +
+      (inExam() ? "" : '<button type="button" class="mast-link" data-action="calc-open">Miniräknare</button>') +
+      '<a class="mast-link lib-link" href="https://isaksplugglibary.vercel.app">Bibliotek</a>' +
+      "</div>" +
+      '<div class="topbar-inner chip-row">' + chips + "</div>" +
+      "</header>" +
+      '<main class="content">' + inner + "</main>" +
+      calc
     );
   }
 
